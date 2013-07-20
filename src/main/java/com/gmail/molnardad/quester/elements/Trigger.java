@@ -3,12 +3,10 @@ package com.gmail.molnardad.quester.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.SerializationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import com.gmail.molnardad.quester.Quester;
-import com.gmail.molnardad.quester.conditions.ItemCondition;
 import com.gmail.molnardad.quester.storage.StorageKey;
 
 

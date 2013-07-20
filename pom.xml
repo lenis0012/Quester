@@ -74,7 +74,6 @@
   </dependencies>
   
   <build>
-  
     <resources>
       <resource>
         <targetPath>.</targetPath>
@@ -86,7 +85,6 @@
         </includes>
       </resource>
     </resources>
-    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -97,7 +95,6 @@
             <target>1.6</target>
           </configuration>
       </plugin>
-      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -114,7 +111,6 @@
           <finalName>${package.name}</finalName>
         </configuration>
       </plugin>
-      
        <plugin>
          <artifactId>maven-assembly-plugin</artifactId>
          <version>2.4</version>
@@ -125,7 +121,6 @@
            <outputDirectory>${assembly.dir}</outputDirectory>
          </configuration>
        </plugin>
-      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>

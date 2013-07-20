@@ -23,13 +23,17 @@ public class DescCommands {
 			section = "QMod",
 			desc = "sets quest description",
 			min = 0,
-			max = 1,
+			max = Integer.MAX_VALUE,
 			usage = "[new description]")
 	public void set(QCommandContext context, CommandSender sender) throws QuesterException {
 		String desc = "";
-		if(context.length() > 0) {
-			desc = context.getString(0);
+		for(int i = 0; i < context.length(); i++) {
+			desc += context.getString(i) + " ";
 		}
+		
+		if(context.length() > 0)
+			desc = desc.substring(0, desc.length() - 1);
+		
 		qMan.setQuestDescription(sender.getName(), desc, context.getSenderLang());
 		sender.sendMessage(ChatColor.GREEN + context.getSenderLang().Q_DESC_SET);
 	}
@@ -39,10 +43,18 @@ public class DescCommands {
 			section = "QMod",
 			desc = "adds to quest description",
 			min = 1,
-			max = 1,
+			max = Integer.MAX_VALUE,
 			usage = "<description to add>")
 	public void add(QCommandContext context, CommandSender sender) throws QuesterException {
-		qMan.addQuestDescription(sender.getName(), context.getString(0), context.getSenderLang());
+		String desc = "";
+		for(int i = 0; i < context.length(); i++) {
+			desc += context.getString(i) + " ";
+		}
+		
+		if(context.length() > 0)
+			desc = desc.substring(0, desc.length() - 1);
+		
+		qMan.addQuestDescription(sender.getName(), desc, context.getSenderLang());
 		sender.sendMessage(ChatColor.GREEN + context.getSenderLang().Q_DESC_SET);
 	}
 }

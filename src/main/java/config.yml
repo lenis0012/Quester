@@ -1,0 +1,29 @@
+general:
+  verbose-logging: true
+  save-interval: 15
+  debug-info: false
+objectives:
+  show-only-current: true
+  break:
+    no-drops: false
+    subtract-on-place: true
+  collect:
+    remove-on-pickup: true
+    subtract-on-drop: false
+quests:
+  max-amount: 1
+  messages:
+    start-show: true
+    cancel-show: true
+    done-show: true
+    objective-show: true
+ranks:
+  Quester: 0
+  Apprentice-Quester: 25
+  Master-Quester: 50
+commands:
+  displayed-cmd: /q
+  world-label-this: this
+  loc-label-here: here
+  loc-label-player: player
+  loc-label-block: block

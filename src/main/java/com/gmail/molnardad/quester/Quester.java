@@ -1,14 +1,9 @@
 package com.gmail.molnardad.quester;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.management.InstanceNotFoundException;
-
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.trait.TraitFactory;
-import net.citizensnpcs.api.trait.TraitInfo;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
@@ -17,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import com.gmail.molnardad.quester.listeners.*;
 import com.gmail.molnardad.quester.commandbase.CommandManager;
@@ -52,10 +46,9 @@ public class Quester extends JavaPlugin {
 		private boolean loaded = false;
 		private int saveID = 0;
 		
-		public static boolean citizens2 = false;
+		public static boolean statues = false;
 		public static boolean epicboss = false;
 		public static boolean vault = false;
-		public static boolean denizen = false;
 
 		
 		public static final String LABEL = ChatColor.BLUE
@@ -93,22 +86,12 @@ public class Quester extends JavaPlugin {
 			}
 			holders.loadHolders();
 			
-			try {
-			    Metrics metrics = new Metrics(this);
-			    metrics.start();
-			} catch (IOException e) {
-			    // Failed to submit the statistics :-(
-			}
-			
 			if(this.setupEconomy()) {
 				log.info("Vault found and hooked...");
 			}
 		
-			if(this.setupCitizens()) {
-				log.info("Citizens 2 found and hooked...");
-			}
-			if(this.setupDenizen()) {
-				log.info("Denizen found and hooked...");
+			if(this.setupStatues()) {
+				log.info("Statues found and hooked...");
 			}
 			if(this.setupEpicBoss()) {
 				log.info("EpicBoss found and hooked...");
@@ -149,10 +132,9 @@ public class Quester extends JavaPlugin {
 			}
 			log = null;
 			econ = null;
-			citizens2 = false;
+			statues = false;
 			epicboss = false;
 			vault = false;
-			denizen = false;
 		}
 		
 		@Override
@@ -229,39 +211,17 @@ public class Quester extends JavaPlugin {
 	        return true;
 		}
 		
-		private boolean setupCitizens() {
-			try{
-				Class.forName("net.citizensnpcs.api.CitizensAPI");
-			} catch(Exception e) {
+		private boolean setupStatues() {
+			if(!Bukkit.getPluginManager().isPluginEnabled("Statues"))
 				return false;
-			}
-			TraitFactory factory = CitizensAPI.getTraitFactory();
-		    TraitInfo info = TraitInfo.create(QuesterTrait.class).withName("quester");
-		    factory.registerTrait(info);
-		    citizens2 = true;
+			
+			statues = true;
 		    return true;
 		}
 		
 		private boolean setupEpicBoss() {
 			epicboss = (getServer().getPluginManager().getPlugin("EpicBossRecoded") != null);
 		    return epicboss;
-		}
-		
-		private boolean setupDenizen() {
-			if(citizens2) {
-				denizen = (getServer().getPluginManager().getPlugin("Denizen") != null);
-			}
-			if(denizen) {
-				try {
-					denizen = Class.forName("net.aufdemrand.denizen.npc.dNPC") != null;
-				} catch (Exception e) {
-					denizen = false;
-				}
-				if(!denizen) {
-					log.info("Incorrect denizen version found. Supported version is 0.8.8 or newer.");
-				} 
-			}
-			return denizen;
 		}
 		
 		private void loadLocal() {
@@ -323,8 +283,8 @@ public class Quester extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new DyeListener(this), this);
 			getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 			getServer().getPluginManager().registerEvents(new QuestItemListener(), this);
-			if(citizens2) {
-				getServer().getPluginManager().registerEvents(new Citizens2Listener(this), this);
+			if(statues) {
+				getServer().getPluginManager().registerEvents(new StatuesListener(this), this);
 			}
 			if(epicboss) {
 				getServer().getPluginManager().registerEvents(new BossDeathListener(this), this);
@@ -363,6 +323,7 @@ public class Quester extends JavaPlugin {
 					PointQevent.class,
 					ItemQevent.class,
 					SoundQevent.class,
+					ManaQevent.class,
 					
 					// objectives
 					BreakObjective.class,

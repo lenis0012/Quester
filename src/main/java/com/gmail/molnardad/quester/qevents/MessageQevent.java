@@ -33,10 +33,18 @@ public final class MessageQevent extends Qevent {
 
 	@QCommand(
 			min = 1,
-			max = 1,
+			max = Integer.MAX_VALUE,
 			usage = "<message>")
 	public static Qevent fromCommand(QCommandContext context) {
-		return new MessageQevent(context.getString(0));
+		String desc = "";
+		for(int i = 0; i < context.length(); i++) {
+			desc += context.getString(i) + " ";
+		}
+		
+		if(context.length() > 0)
+			desc = desc.substring(0, desc.length() - 1);
+		
+		return new MessageQevent(desc);
 	}
 
 	@Override
